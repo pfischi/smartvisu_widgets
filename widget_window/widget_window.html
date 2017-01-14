@@ -1,0 +1,30 @@
+/**
+* A window widget for closed, open and tilt state
+*
+* @param unique id for this widget
+* @param a item
+* @param the pic for the 'closed' state (optional, default: fts_window_1w.svg)
+* @param the pic for the 'open' state (optional, default: fts_window_1w_open.svg)
+* @param the pic for the 'tilt' state (optional, default: fts_window_1w_tilt.svg)
+* @param value send for the 'closed' state (optional, default 0)
+* @param value send for the 'open' state (optional, default 1)
+* @param value send for the 'tilt' state (optional, default 2)
+* @param the color_closed (default '#008000' green)
+* @param the color_open (default '#f00' red)
+* @param the color_tilt (default '#f00' red)
+*/
+{% macro widget_window(id, item, closed, open, tilt, val_closed, val_open, val_tilt, color_closed, color_open, color_tilt) %}
+{% set uid = uid(page, id) %}
+{% import "basic.html" as basic %}
+
+<span id="{{ uid }}" data-widget="pfischi.widget_window" data-item="{{ item }}"
+      data-val-closed="{{ val_closed|default('0') }}" data-val-open="{{ val_open|default('1') }}" data-val-tilt="{{ val_tilt|default('2') }}"
+      data-pic-closed="{{ pic_closed|deficon('fts_window_1w.svg') }}" data-pic-open="{{ pic_open|deficon('fts_window_1w_open.svg') }}" data-pic-tilt="{{ pic_tilt|deficon('fts_window_1w_tilt.svg') }}"
+      class="switch icon">
+				<a>
+					{{ basic._icon(pic_closed|deficon('fts_window_1w.svg'), color_closed|default('#008000'), uid ~ '-0') }}
+					{{ basic._icon(pic_open|deficon('fts_window_1w_open.svg'), color_open|default('#f00'), uid ~ '-1', 'hide') }}
+                    {{ basic._icon(pic_tilt|deficon('fts_window_1w_tilt.svg'), color_tilt|default('#f00'), uid ~ '-2', 'hide') }}
+				</a>
+		</span>
+{% endmacro %}
