@@ -1,0 +1,38 @@
+{% macro widget_rtr(id, txt, item_actual, item_set_value, item_set, item_comfort, item_night, item_frost, item_state, item_txt, step) %}
+        {% import "basic.html" as basic %}
+
+        <div id="{{ uid(page, id) }}" data-widget="pfischi.widget_rtr" data-step="{{ step|default(0.5) }}"
+                class="rtr">
+                <div class="actual">
+                        <div class="temp">{{ basic.float(id~'actual', item_actual, '°' ) }}</div>
+                        <div class="text">{{ txt }} {% if item_txt %} {{ basic.value(id~'txt', item_txt) }} {% endif %}</div>
+                </div>
+
+                {% if item_set_value %}
+                        <div class="set">
+                                <a data-role="button" data-icon="minus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+                                <div class="temp" style="display:none;">{{ basic.float(id~'set', item_set, '°' ) }}</div>
+                                <div class="temp">{{ basic.float(id~'set_value', item_set_value, '°' ) }}</div>
+                                <a data-role="button" data-icon="plus" data-inline="true" data-iconpos="notext" class="ui-mini"></a>
+                        </div>
+                {% endif %}
+
+                <div class="control">
+                        {% if ((config_driver == 'linknx') and (item_comfort == item_night) and (item_night == item_frost)) %}
+                                {{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', 'comfort', 'standby') }}
+                                {{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', 'night', 'standby') }}
+                                {{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', 'frost', 'standby') }}
+                        {% elseif ((item_comfort == item_night) and (item_night == item_frost)) %}
+                                {{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg', '1', '2') }}
+                                {{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg', '3', '2') }}
+                                {{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg', '4', '2') }}
+                        {% else %}
+                                {{ basic.switch(id~'mode', item_comfort, 'user_available.svg', 'user_away.svg') }}
+                                {{ basic.switch(id~'night', item_night, 'scene_night.svg', 'scene_day.svg') }}
+                                {{ basic.switch(id~'frost', item_frost, 'weather_frost.svg', 'weather_frost.svg') }}{% endif %}
+                        <div style="float:left; width: 3px; height: 50px;"></div>
+                        {{ basic.switch(id~'state', item_state, 'sani_heating.svg', 'sani_heating.svg') }}
+                </div>
+        </div>
+{% endmacro %}
+
